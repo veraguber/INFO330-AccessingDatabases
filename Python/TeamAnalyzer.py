@@ -20,17 +20,17 @@ for i, arg in enumerate(sys.argv):
 
     # Analyze the pokemon whose pokedex_number is in "arg"
 
-for pokemon in sys.argv:
+for pokemon in sys.argv[1:]:
     strong = []
     weak = []
-    print("Analyzing" + str(pokemon))
-    type_ids = connection.execute(
-        "SELECT type_id FROM pokemon_type WHERE pokemon_id=", pokemon)
-    for id in type_ids:
-        current_type = connection.execute(
-            "SELECT name FROM type WHERE id=", id)
-    print("Bulbasaur (" + str(current_type) +
-          ") is strong against [] but weak against []")
+    print("Analyzing " + str(pokemon))
+    # type_ids = connection.execute(
+    #     "SELECT type_id FROM pokemon_type WHERE pokemon_id=?", (pokemon,))
+    # for id in type_ids:
+    #     current_type = connection.execute(
+    #         "SELECT name FROM type WHERE id=?", (id,))
+    # print("Bulbasaur (" + str(current_type) +
+    #       ") is strong against [] but weak against []")
 
     # You will need to write the SQL, extract the results, and compare
     # Remember to look at those "against_NNN" column values; greater than 1
