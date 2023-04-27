@@ -21,6 +21,8 @@ for i, arg in enumerate(sys.argv):
     # Analyze the pokemon whose pokedex_number is in "arg"
 
 for pokemon in sys.argv:
+    strong = []
+    weak = []
     print("Analyzing" + str(pokemon))
     type_ids = connection.execute(
         "SELECT type_id FROM pokemon_type WHERE pokemon_id=", pokemon)
