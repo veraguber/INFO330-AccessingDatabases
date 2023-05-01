@@ -31,14 +31,16 @@ for pokemon in sys.argv[1:]:
     type_ids = pokemonCursor.execute(
         "SELECT type_id FROM pokemon_type WHERE pokemon_id=?", (pokemon,)).fetchall()
     types = []
+    against = pokemonCursor.execute(
+        "SELECT * FROM against WHERE type_source_id1=? AND type_source_id2=?", (type_ids[0][0], type_ids[1][0],)).fetchall()
+    print(against[0][2:])
+    # if type_ids[0][0] > 1 and type_ids[1][0]
+
     for id in type_ids:
-        # print(id[0])
         curr_type = pokemonCursor.execute(
             "SELECT name FROM type WHERE id=?", (id[0],)).fetchone()
-        for type in curr_type:
-            types.append(type)
-            # print(type)
-    # print(types)
+        for ctype in curr_type:
+            types.append(ctype)
     type_str = ""
     for val in types:
         type_str += val
