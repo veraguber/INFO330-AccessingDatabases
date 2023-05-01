@@ -4,9 +4,9 @@ import sys      # This helps with command-line parameters
 connection = sqlite3.connect('../pokemon.sqlite')
 
 # All the "against" column suffixes:
-types = ["bug", "dark", "dragon", "electric", "fairy", "fight",
-         "fire", "flying", "ghost", "grass", "ground", "ice", "normal",
-         "poison", "psychic", "rock", "steel", "water"]
+all_types = ["bug", "dark", "dragon", "electric", "fairy", "fight",
+             "fire", "flying", "ghost", "grass", "ground", "ice", "normal",
+             "poison", "psychic", "rock", "steel", "water"]
 
 # Take six parameters on the command-line
 if len(sys.argv) < 6:
@@ -33,8 +33,12 @@ for pokemon in sys.argv[1:]:
     types = []
     against = pokemonCursor.execute(
         "SELECT * FROM against WHERE type_source_id1=? AND type_source_id2=?", (type_ids[0][0], type_ids[1][0],)).fetchall()
-    print(against[0][2:])
-    # if type_ids[0][0] > 1 and type_ids[1][0]
+    data = against[0][2:]
+    for i in range(len(data)):
+        if data[i] > 1:
+            strong.append(all_types[i])
+        elif data[i] < 1:
+            weak.append(all_types[i])
 
     for id in type_ids:
         curr_type = pokemonCursor.execute(
@@ -46,7 +50,8 @@ for pokemon in sys.argv[1:]:
         type_str += val
         type_str += " "
     new = type_str.rstrip()
-    print(name + " (" + new + ") is strong against")
+    print(name + " (" + new + ") is strong against " +
+          str(strong) + " but weak against " + str(weak))
 
     # You will need to write the SQL, extract the results, and compare
     # Remember to look at those "against_NNN" column values; greater than 1
