@@ -1,7 +1,7 @@
 import sqlite3  # This is the package for all sqlite3 access in Python
 import sys      # This helps with command-line parameters
 
-connection = sqlite3.connect("pokemon.sqlite")
+connection = sqlite3.connect('../pokemon.sqlite')
 
 # All the "against" column suffixes:
 types = ["bug", "dark", "dragon", "electric", "fairy", "fight",
@@ -24,6 +24,21 @@ for pokemon in sys.argv[1:]:
     strong = []
     weak = []
     print("Analyzing " + str(pokemon))
+    pokemonCursor = connection.cursor()
+    type_ids = pokemonCursor.execute(
+        "SELECT type_id FROM pokemon_type WHERE pokemon_id=?", (pokemon,))
+    types = []
+    for id in type_ids:
+        # print(id[0])
+        curr_type = pokemonCursor.execute(
+            "SELECT name FROM type WHERE id=?", (id[0],))
+        for type in curr_type:
+            types.append(type[0])
+            print(types)
+
+    #     types_str += curr_type
+    #     types_str += " "
+    # print(types_str)
     # type_ids = connection.execute(
     #     "SELECT type_id FROM pokemon_type WHERE pokemon_id=?", (pokemon,))
     # for id in type_ids:
