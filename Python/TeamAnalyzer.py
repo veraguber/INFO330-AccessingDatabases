@@ -25,27 +25,26 @@ for pokemon in sys.argv[1:]:
     weak = []
     print("Analyzing " + str(pokemon))
     pokemonCursor = connection.cursor()
+    pokemon_name = pokemonCursor.execute(
+        "SELECT name FROM pokemon WHERE id=?", (pokemon,)).fetchone()
+    name = pokemon_name[0]
     type_ids = pokemonCursor.execute(
-        "SELECT type_id FROM pokemon_type WHERE pokemon_id=?", (pokemon,))
+        "SELECT type_id FROM pokemon_type WHERE pokemon_id=?", (pokemon,)).fetchall()
     types = []
     for id in type_ids:
         # print(id[0])
         curr_type = pokemonCursor.execute(
-            "SELECT name FROM type WHERE id=?", (id[0],))
+            "SELECT name FROM type WHERE id=?", (id[0],)).fetchone()
         for type in curr_type:
-            types.append(type[0])
-            print(types)
-
-    #     types_str += curr_type
-    #     types_str += " "
-    # print(types_str)
-    # type_ids = connection.execute(
-    #     "SELECT type_id FROM pokemon_type WHERE pokemon_id=?", (pokemon,))
-    # for id in type_ids:
-    #     current_type = connection.execute(
-    #         "SELECT name FROM type WHERE id=?", (id,))
-    # print("Bulbasaur (" + str(current_type) +
-    #       ") is strong against [] but weak against []")
+            types.append(type)
+            # print(type)
+    # print(types)
+    type_str = ""
+    for val in types:
+        type_str += val
+        type_str += " "
+    new = type_str.rstrip()
+    print(name + " (" + new + ") is strong against")
 
     # You will need to write the SQL, extract the results, and compare
     # Remember to look at those "against_NNN" column values; greater than 1
